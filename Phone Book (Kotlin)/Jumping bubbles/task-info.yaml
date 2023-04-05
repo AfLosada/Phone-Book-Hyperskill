@@ -1,0 +1,82 @@
+type: edu
+files:
+- name: src/phonebook/Main.kt
+  visible: true
+  text: |
+    package phonebook
+
+    import java.io.File
+
+    fun main() {
+        val path = System.getProperty("user.dir")
+        val namesToFind = File("$path/find.txt").readLines()
+        val directory = File("$path/directory.txt").readLines()
+        println("Start searching...")
+        val startTime = System.currentTimeMillis()
+        val foundNames = namesToFind.filter { name -> directory.find { it.contains(name) } != null }
+        val endTime = System.currentTimeMillis()
+        val difference = (endTime - startTime)
+        println(
+            "Found ${foundNames.size} / ${namesToFind.size} entries. Time taken: ${
+                String.format(
+                    "%1\$tM min. %1\$tS sec. %1\$tL ms.",
+                    difference
+                )
+            }"
+        )
+    }
+  learner_created: false
+- name: test/PhoneBookTest.java
+  visible: false
+  text: |
+    import org.hyperskill.hstest.stage.StageTest;
+    import org.hyperskill.hstest.testcase.CheckResult;
+    import org.hyperskill.hstest.testcase.TestCase;
+
+    import java.util.Arrays;
+    import java.util.List;
+
+    public class PhoneBookTest extends StageTest {
+
+        @Override
+        public List<TestCase> generate() {
+            return Arrays.asList(
+                new TestCase().setTimeLimit(30 * 60 * 1000)
+            );
+        }
+
+        @Override
+        public CheckResult check(String reply, Object clue) {
+            reply = reply.toLowerCase();
+            return new CheckResult(
+                reply.contains("start searching")
+                    && reply.contains("found")
+                    && reply.contains("min.")
+                    && reply.contains("sec.")
+                    && reply.contains("ms.")
+                    && reply.contains("sorting time")
+                    && reply.contains("searching time")
+                    && reply.contains("linear search")
+                    && reply.contains("bubble sort")
+                    && reply.contains("jump search"));
+        }
+    }
+  learner_created: false
+- name: find.txt
+  visible: true
+  learner_created: true
+- name: directory.txt
+  visible: true
+  learner_created: true
+- name: small_find.txt
+  visible: true
+  learner_created: true
+- name: small_directory.txt
+  visible: true
+  learner_created: true
+feedback_link: https://hyperskill.org/learn/step/7749#comment
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Wed, 05 Apr 2023 03:17:11 UTC"
+record: -1
